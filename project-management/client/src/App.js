@@ -8,6 +8,7 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import JWTest from './JWTest';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   return (
@@ -16,7 +17,18 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/projects' element={<ProjectList />} />
+        {/* <Route path='/projects' element={<ProjectList />} /> */}
+        <Route
+          path='/projects'
+          element={
+            <ProtectedRoute redirectTo='/login'>
+              <ProjectList />
+            </ProtectedRoute>
+          }
+        />
+        {/* this is a protected route */}
+
+
         <Route path='/projects/:id' element={<ProjectDetails />} />
         <Route path='/projects/edit/:id' element={<EditProject />} />
         <Route path='/signup' element={<Signup />} />
