@@ -1,3 +1,24 @@
+🔒 Protecting Routes using React Router
+---------------------------------------
+
+```js
+// client/src/components/ProtectedRoute
+import React, { useContext } from 'react'
+import { AuthContext } from '../context/auth'
+import { Navigate } from 'react-router-dom'
+
+export default function ProtectedRoute({ children, redirectTo }) {
+
+	const { isLoggedIn } = useContext(AuthContext)
+
+	return isLoggedIn ? children : <Navigate to={redirectTo} />
+}
+```
+
+#### Use it in App.js
+
+```js
+// client/src/App.js
 import './App.css';
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
@@ -8,7 +29,7 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import JWTest from './JWTest';
 import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute'
+import ProtectedRoute from './components/ProtectedRoute'        // <=== Add this
 
 function App() {
   return (
@@ -18,8 +39,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         {/* <Route path='/projects' element={<ProjectList />} /> */}
+
         {/* this is a protected route */}
-        <Route
+        <Route 											// <=== Add this
           path='/projects'
           element={
             <ProtectedRoute redirectTo='/login'>
@@ -27,7 +49,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
 
         <Route path='/projects/:id' element={<ProjectDetails />} />
         <Route path='/projects/edit/:id' element={<EditProject />} />
@@ -40,3 +61,4 @@ function App() {
 }
 
 export default App;
+```
